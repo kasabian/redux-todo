@@ -1,0 +1,13 @@
+<div class="row mt-3 shadow-sm p-2 bg-light rounded">
+  <div class="col-10 p-2">
+    {{ item.text }}
+  </div>
+  <div class="col-2 p-2">
+    <button type="button"
+            class="btn btn-sm btn-danger"
+            (click)="removeItem(item.id)"
+    >
+      Remove
+    </button>
+  </div>
+</div>
