@@ -1,3 +1,19 @@
-<div class="container mt-5">
-  <app-lists-container></app-lists-container>
+<div class="container mt-5 mb-5">
+  <h1 class="text-center">Redux Demo</h1>
+
+  <div class="row mt-5">
+    <div class="col-3">
+      <button type="button"
+              class="btn btn-success"
+              (click)="addList()"
+      >
+        Add New List
+      </button>
+    </div>
+  </div>
+
+  <app-lists-container *ngFor="let listItemId of (appState$ | async).lists.allIds"
+                       [listItem]="(appState$ | async).lists.byId[listItemId]"
+                       [items]="(appState$ | async).items"
+  ></app-lists-container>
 </div>

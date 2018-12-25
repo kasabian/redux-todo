@@ -1,5 +1,4 @@
-<h1 class="text-center">Redux Demo</h1>
-
+<h3 class="text-center"> {{ listItem.name }} </h3>
 <div class="row mt-5">
   <div class="col-3"></div>
   <div class="col-6">
@@ -22,12 +21,9 @@
 
     <div class="row mt-2">
       <div class="col-12">
-        <!-- start item -->
-        <app-list-item *ngFor="let item of (lists$ | async).lists.items"
-                       [item]="item"
+        <app-list-item *ngFor="let itemId of listItem.items"
+                       [item]="items.byId[itemId]"
         ></app-list-item>
-        <!-- end item -->
-
       </div>
     </div>
     <div class="col-3"></div>

@@ -1,10 +1,9 @@
-import { Component, OnInit } from '@angular/core';
-import { Store } from '@ngrx/store';
-import { AppState } from '../redux-app/app-state.model';
-import {AddItem} from './lists-redux/lists.actions';
-import { Observable } from 'rxjs';
-
-let id = 0;
+import {Component, Input, OnInit} from '@angular/core';
+import {Store} from '@ngrx/store';
+import {AppState} from '../redux-app/app-state.model';
+import {Items, List} from './lists-redux/lists.model';
+import {AddItem} from './lists-redux/items.actions';
+import {genUniqId} from '../helpers/helper.utils';
 
 @Component({
   selector: 'app-lists-container',
@@ -13,13 +12,12 @@ let id = 0;
 })
 export class ListsContainerComponent implements OnInit {
 
-  lists$: Observable;
+  @Input() listItem: List;
+  @Input() items: Items;
 
   myText = '';
 
-  constructor(private store: Store<AppState>) {
-    this.lists$ = this.store.select('app');
-  }
+  constructor(private store: Store<AppState>) {}
 
   ngOnInit() {
   }
@@ -32,8 +30,9 @@ export class ListsContainerComponent implements OnInit {
 
     this.store.dispatch(new AddItem({
       item: {
-        id: (++id).toString(),
-        text: this.myText
+        id: genUniqId(),
+        text: this.myText,
+        listId: this.listItem.id
       }
     }));
 

@@ -6,7 +6,7 @@ import {
 import { Item } from '../../lists-redux/lists.model';
 import { Store } from '@ngrx/store';
 import { AppState } from '../../../redux-app/app-state.model';
-import {RemoveItem} from '../../lists-redux/lists.actions';
+import { RemoveItem } from '../../lists-redux/items.actions';
 
 @Component({
   selector: 'app-list-item',
@@ -22,9 +22,10 @@ export class ListItemComponent implements OnInit {
   ngOnInit() {
   }
 
-  removeItem(itemId: string) {
+  removeItem(itemId: string, listId: string) {
     this.store.dispatch(new RemoveItem({
-      itemId
+      itemId,
+      listId
     }));
   }
 

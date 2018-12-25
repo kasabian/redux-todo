@@ -1,23 +1,22 @@
 import { Action } from '@ngrx/store';
-import { Item } from './lists.model';
-
+import { List } from './lists.model';
 
 export enum ActionTypes {
-  ADD_ITEM = '[LISTS] addItem',
-  REMOVE_ITEM = '[LISTS] removeItem',
-  UPDATE_ITEM = '[LISTS] updateItem',
+  ADD_LIST = '[LISTS] addList',
+  REMOVE_LIST = '[LISTS] removeList',
+  UPDATE_LIST = '[LISTS] updateList',
 }
 
-export class AddItem implements Action {
-  readonly type = ActionTypes.ADD_ITEM;
+export class AddList implements Action {
+  readonly type = ActionTypes.ADD_LIST;
 
   constructor(public payload: {
-    item: Item
+    item: List
   }) {}
 }
 
-export class UpdateItem implements Action {
-  readonly type = ActionTypes.UPDATE_ITEM;
+export class UpdateList implements Action {
+  readonly type = ActionTypes.UPDATE_LIST;
   constructor(public payload: {
     item: {
       text: string;
@@ -26,13 +25,13 @@ export class UpdateItem implements Action {
   }) {}
 }
 
-export class RemoveItem implements Action {
-  readonly type = ActionTypes.REMOVE_ITEM;
+export class RemoveList implements Action {
+  readonly type = ActionTypes.REMOVE_LIST;
 
   constructor(public payload: { itemId: string }) {}
 }
 
 export type All
-  = AddItem |
-  UpdateItem |
-  RemoveItem;
+  = AddList |
+  UpdateList |
+  RemoveList;

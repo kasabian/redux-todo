@@ -1,44 +1,10 @@
-import { AppState, initState } from './app-state.model';
-import {ActionTypes, All} from '../lists-container/lists-redux/lists.actions';
-import {Item} from '../lists-container/lists-redux/lists.model';
+import {AppState, initState} from './app-state.model';
+import {listsReducer} from '../lists-container/lists-redux/lists.reducers';
+import {itemsReducers} from '../lists-container/lists-redux/items.reducers';
 
-export function appReducer(state: AppState = initState(), action: All): AppState {
-
-  switch (action.type) {
-    case ActionTypes.ADD_ITEM:
-      return appItemReducer(state, action.payload);
-    case ActionTypes.REMOVE_ITEM:
-      return removeItemReducer(state, action.payload);
-    default :
-      return state;
-  }
+export function appReducer(state: AppState = initState(), action: any): AppState {
+    return {
+      lists: listsReducer(state.lists, action),
+      items: itemsReducers(state.items, action)
+    };
 }
-
-export function removeItemReducer(state: AppState, payload: { itemId: string }) {
-  const { itemId } = payload,
-    newItems = state.lists.items;
-
-  return {
-    ...state,
-    lists: {
-      ...state.lists,
-      items: newItems.filter((item) => {
-        return item.id !== itemId;
-      } )
-    }
-  };
-}
-
-export function appItemReducer(state: AppState, payload: { item: Item }): AppState {
-  const { item } = payload,
-        newItems = state.lists.items;
-
-  return {
-    ...state,
-    lists: {
-      ...state.lists,
-      items: [item, ...newItems]
-    }
-  };
-}
-
