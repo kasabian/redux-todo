@@ -1,6 +1,7 @@
 import {
-  Component,
-  Input,
+  AfterViewChecked,
+  Component, ElementRef,
+  Input, NgZone,
   OnInit
 } from '@angular/core';
 import { Item } from '../../lists-redux/lists.model';
@@ -13,14 +14,29 @@ import { RemoveItem } from '../../lists-redux/items.actions';
   templateUrl: './list-item.component.html',
   styleUrls: ['./list-item.component.scss']
 })
-export class ListItemComponent implements OnInit {
+export class ListItemComponent implements OnInit, AfterViewChecked {
 
   @Input() item: Item;
 
-  constructor(private store: Store<AppState>) { }
+  constructor(
+    private store: Store<AppState>,
+    private zone: NgZone,
+    private el: ElementRef
+  ) { }
 
-  ngOnInit() {
+  ngAfterViewChecked() {
+    this.el.nativeElement.classList.add('background-red');
+
+    this.zone.runOutsideAngular(() => {
+
+      setTimeout(() => {
+        this.el.nativeElement.classList.remove('background-red');
+      }, 1000);
+
+    });
   }
+
+  ngOnInit() {}
 
   removeItem(itemId: string, listId: string) {
     this.store.dispatch(new RemoveItem({
@@ -28,5 +44,4 @@ export class ListItemComponent implements OnInit {
       listId
     }));
   }
-
 }
