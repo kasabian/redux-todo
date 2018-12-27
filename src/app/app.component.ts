@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {ChangeDetectionStrategy, Component} from '@angular/core';
 import {Observable} from 'rxjs';
 import {AppState} from './redux-app/app-state.model';
 import {Store} from '@ngrx/store';
@@ -10,14 +10,21 @@ let counter = 0;
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss']
+  styleUrls: ['./app.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class AppComponent {
 
   appState$: Observable<AppState>;
 
+  appState: AppState;
+
   constructor(private store: Store<AppState>) {
     this.appState$ = store.select('app');
+
+    this.appState$.subscribe((state: AppState) => {
+      this.appState = state;
+    });
   }
 
   addList() {

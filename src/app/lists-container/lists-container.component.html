@@ -1,6 +1,6 @@
 <h3 class="text-center"> {{ listItem.name }} </h3>
 
-{{ name }}: {{runChangeDetection}}
+{{name}}: {{someVariable}}
 
 <div class="row mt-5">
   <div class="col-3"></div>
@@ -25,7 +25,7 @@
     <div class="row mt-2">
       <div class="col-12">
         <app-list-item *ngFor="let itemId of listItem.items"
-                       [item]="items.byId[itemId]"
+                       [item]="appState.items.byId[itemId]"
         ></app-list-item>
       </div>
     </div>

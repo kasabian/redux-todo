@@ -12,8 +12,7 @@
     </div>
   </div>
 
-  <app-lists-container *ngFor="let listItemId of (appState$ | async).lists.allIds"
-                       [listItem]="(appState$ | async).lists.byId[listItemId]"
-                       [items]="(appState$ | async).items"
+  <app-lists-container *ngFor="let listItemId of appState.lists.allIds"
+                       [listItem]="appState.lists.byId[listItemId]"
   ></app-lists-container>
 </div>

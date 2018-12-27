@@ -1,9 +1,19 @@
-import {AfterViewChecked, ChangeDetectionStrategy, Component, ElementRef, Input, NgZone, OnChanges, OnInit} from '@angular/core';
+import {
+  AfterViewChecked,
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  ElementRef,
+  Input,
+  NgZone,
+  OnInit
+} from '@angular/core';
 import {Store} from '@ngrx/store';
 import {AppState} from '../redux-app/app-state.model';
-import {Items, List} from './lists-redux/lists.model';
+import {List} from './lists-redux/lists.model';
 import {AddItem} from './lists-redux/items.actions';
 import {genUniqId} from '../helpers/helper.utils';
+import {Observable} from 'rxjs';
 
 @Component({
   selector: 'app-lists-container',
@@ -11,10 +21,13 @@ import {genUniqId} from '../helpers/helper.utils';
   styleUrls: ['./lists-container.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ListsContainerComponent implements OnInit, AfterViewChecked, OnChanges {
+export class ListsContainerComponent implements OnInit, AfterViewChecked {
 
   @Input() listItem: List;
-  @Input() items: Items;
+
+  appState$: Observable<AppState>;
+
+  appState: AppState;
 
   myText = '';
 
@@ -23,27 +36,30 @@ export class ListsContainerComponent implements OnInit, AfterViewChecked, OnChan
   constructor(
     private store: Store<AppState>,
     private zone: NgZone,
-    private el: ElementRef
+    private el: ElementRef,
+    private cd: ChangeDetectorRef
   ) {
 
-    setTimeout(() => {
-      console.log('change name');
-      this.name = 'change name';
-    }, 2000);
+    this.appState$ = store.select('app');
+
+    this.appState$.subscribe((state: AppState) => {
+      this.appState = state;
+    });
+
+    // this.zone.runOutsideAngular(() => {
+    //   setTimeout(() => {
+    //     console.log('change name');
+    //     this.name = 'changed name';
+    //     this.cd.markForCheck();
+    //   }, 2000);
+    // });
 
   }
 
-  get runChangeDetection() {
-    console.log('Checking the view');
-    return true;
-  }
-
-  ngAfterViewChecked() {
-    console.log('hi');
-  }
-
-  ngOnChanges() {
+  get someVariable() {
     this.el.nativeElement.classList.add('background-blue');
+
+    console.log('List', performance.now() );
 
     this.zone.runOutsideAngular(() => {
 
@@ -52,7 +68,11 @@ export class ListsContainerComponent implements OnInit, AfterViewChecked, OnChan
       }, 1000);
 
     });
+
+    return true;
   }
+
+  ngAfterViewChecked() {}
 
   ngOnInit() {}
 
